@@ -42,8 +42,8 @@ case class Anniversary(
 
   def props: List[(String, String)] = List(
     "UID" -> uid,
-    "DTSTART" -> formatDate(dtstart),
-    "DTEND" -> formatDate(dtend),
+    "DTSTART;VALUE=DATE" -> formatDate(dtstart),
+    "DTEND;VALUE=DATE" -> formatDate(dtend),
     "SUMMARY" -> summary
   )
 }
