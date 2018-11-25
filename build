@@ -1,0 +1,4 @@
+#! /bin/sh
+
+./mill core.assembly
+java -jar out/core/assembly/dest/out.jar > calendar.ics
