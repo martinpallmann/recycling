@@ -1,6 +1,7 @@
 package recycling
 
 import java.time.LocalDate
+import java.util.UUID
 
 import com.softwaremill.sttp.quick._
 import io.circe.Json
@@ -39,15 +40,15 @@ object Main {
   }
 
   def main(args: Array[String]): Unit = {
+    val a=  Address(args(0), args(1), args(2))
     System.setProperty("java.awt.headless", "true")
-    recyclingDate.foreach(d =>
-      println(
-        VCalendar(
-          List(
-            Anniversary(d, d, "service_date_recycling", "Abholung Wertstoffe")
-          )
-        )
-      )
+    val m = BSR(a, false).map {
+      case (d, s) => Anniversary(d, d, UUID.randomUUID().toString, s)
+    }
+    val rd = recyclingDate.fold(
+      _ => List.empty[VEvent],
+      d => List(Anniversary(d, d, UUID.randomUUID().toString, "Recycling"))
     )
+    println(VCalendar(rd ++ m))
   }
 }
