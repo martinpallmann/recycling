@@ -45,7 +45,7 @@ object Main {
     System.setProperty("java.awt.headless", "true")
 
     def event(d: LocalDate, descr: String): Anniversary =
-      Anniversary(d, d, UUID.randomUUID().toString, descr)
+      Anniversary(d, d, UUID.randomUUID().toString, descr, List(DisplayAlarm(descr, RelatedTrigger(DurTime(false, DurHour(8))))))
 
     if (args.length != 3) {
       println("need three arguments")
@@ -53,7 +53,7 @@ object Main {
     }
     val a =  Address(args(0), args(1), args(2))
     val m = BSR(a, false).map {
-      case (d, s) => Anniversary(d, d, UUID.randomUUID().toString, s)
+      case (d, s) => event(d, s)
     }
     val rd = recyclingDate.fold(
       _ => List.empty[VEvent],
