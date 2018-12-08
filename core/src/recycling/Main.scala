@@ -48,6 +48,7 @@ object Main {
       .fromFile("veolia.txt", "UTF-8")
       .getLines()
       .toList
+      .map(x => if (x.length <= 6) x + "2019" else x)
       .map(x => LocalDate.parse(x, DateTimeFormatter.ofPattern("dd.M.yyyy")))
 
     def event(d: LocalDate, descr: String): Anniversary =
