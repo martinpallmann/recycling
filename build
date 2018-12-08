@@ -1,4 +1,5 @@
 #! /bin/sh
 
+mkdir cal
 ./mill core.assembly
-java -jar out/core/assembly/dest/out.jar $@
+java -jar out/core/assembly/dest/out.jar $@ > cal/recycling.ics

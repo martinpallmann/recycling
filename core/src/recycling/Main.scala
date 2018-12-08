@@ -46,10 +46,6 @@ object Main {
       println("need three arguments")
       System.exit(1)
     }
-    println("ok")
-    System.exit(0)
-
-//    val a =  Address(System.getenv("STREET"), System.getenv("HOUSENO"), System.getenv("ZIP"))
     val a =  Address(args(0), args(1), args(2))
     val m = BSR(a, false).map {
       case (d, s) => Anniversary(d, d, UUID.randomUUID().toString, s)
