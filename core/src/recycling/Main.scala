@@ -44,13 +44,6 @@ object Main {
   def main(args: Array[String]): Unit = {
     System.setProperty("java.awt.headless", "true")
 
-    val veoliaDates = Source
-      .fromFile("veolia.txt", "UTF-8")
-      .getLines()
-      .toList
-      .map(x => if (x.length <= 6) x + "2019" else x)
-      .map(x => LocalDate.parse(x, DateTimeFormatter.ofPattern("dd.M.yyyy")))
-
     def event(d: LocalDate, descr: String): Anniversary =
       Anniversary(d, d, UUID.randomUUID().toString, descr)
 
@@ -66,6 +59,6 @@ object Main {
       _ => List.empty[VEvent],
       d => List(event(d, "Wertstoffe"))
     )
-    println(VCalendar(rd ++ m ++ veoliaDates.map(x => event(x, "Papier und Pappe"))))
+    println(VCalendar(rd ++ m ++ Veolia.dates(10).map(x => event(x, "Papier und Pappe"))))
   }
 }
