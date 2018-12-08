@@ -1,12 +1,14 @@
 package recycling
 
 import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.UUID
 
 import com.softwaremill.sttp.quick._
 import io.circe.Json
 import io.circe.parser.parse
 
+import scala.io.Source
 import scala.util.Try
 
 object Main {
@@ -44,7 +46,7 @@ object Main {
 
     def event(d: LocalDate, descr: String): Anniversary =
       Anniversary(d, d, UUID.randomUUID().toString, descr)
-
+    
     if (args.length != 3) {
       println("need three arguments")
       System.exit(1)
@@ -57,10 +59,14 @@ object Main {
       _ => List.empty[VEvent],
       d => List(event(d, "Wertstoffe"))
     )
-    val veolia = List(
-      event(LocalDate.of(2018, 12, 24), "Papier und Pappe"),
-      event(LocalDate.of(2019, 1, 22), "Papier und Pappe")
-    )
+    val veolia = Source
+      .fromFile("veolia.txt", "UTF-8")
+      .getLines()
+      .toList
+      .map(x => event(
+        LocalDate.parse(x, DateTimeFormatter.ofPattern("dd.MM.yyyy")),
+        "Papier und Pappe"
+      ))
     println(VCalendar(rd ++ m ++ veolia))
   }
 }
