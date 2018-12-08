@@ -42,6 +42,9 @@ object Main {
   def main(args: Array[String]): Unit = {
     System.setProperty("java.awt.headless", "true")
 
+    def event(d: LocalDate, descr: String): Anniversary =
+      Anniversary(d, d, UUID.randomUUID().toString, descr)
+
     if (args.length != 3) {
       println("need three arguments")
       System.exit(1)
@@ -52,8 +55,12 @@ object Main {
     }
     val rd = recyclingDate.fold(
       _ => List.empty[VEvent],
-      d => List(Anniversary(d, d, UUID.randomUUID().toString, "Recycling"))
+      d => List(event(d, "Wertstoffe"))
     )
-    println(VCalendar(rd ++ m))
+    val veolia = List(
+      event(LocalDate.of(2018, 12, 24), "Papier und Pappe"),
+      event(LocalDate.of(2019, 1, 22), "Papier und Pappe")
+    )
+    println(VCalendar(rd ++ m ++ veolia))
   }
 }
