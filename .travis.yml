@@ -3,3 +3,11 @@ scala: 2.12.7
 jdk: openjdk11
 script:
 - "./build $STREET $HOUSENO $ZIP"
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  keep-history: true
+  local-dir: gh-pages
+  on:
+    branch: master

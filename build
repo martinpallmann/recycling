@@ -1,5 +1,5 @@
 #! /bin/sh
 
-mkdir cal
+mkdir gh-pages
 ./mill core.assembly
-java -jar out/core/assembly/dest/out.jar $@ > cal/recycling.ics
+java -jar out/core/assembly/dest/out.jar $@ > gh-pages/recycling.ics
