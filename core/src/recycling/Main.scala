@@ -41,11 +41,20 @@ object Main {
     } yield date
   }
 
+  sealed trait Company {
+    override def toString: String = this.getClass.getSimpleName.replace("$", "").toLowerCase()
+  }
+  case object Company {
+    case object Alba extends Company
+    case object BSR extends Company
+    case object Veolia extends Company
+  }
+
   def main(args: Array[String]): Unit = {
     System.setProperty("java.awt.headless", "true")
 
-    def event(d: LocalDate, descr: String): Anniversary =
-      Anniversary(d, d, UUID.randomUUID().toString, descr, List(DisplayAlarm(descr, RelatedTrigger(DurTime(false, DurHour(8))))))
+    def event(d: LocalDate, descr: String, c: Company): Anniversary =
+      Anniversary(d, d, s"$d-$c@martinpallmann.de", descr, List(DisplayAlarm(descr, RelatedTrigger(DurTime(false, DurHour(8))))))
 
     if (args.length != 3) {
       println("need three arguments")
@@ -53,12 +62,12 @@ object Main {
     }
     val a =  Address(args(0), args(1), args(2))
     val m = BSR(a, false).map {
-      case (d, s) => event(d, s)
+      case (d, s) => event(d, s, Company.BSR)
     }
     val rd = recyclingDate.fold(
       _ => List.empty[VEvent],
-      d => List(event(d, "Wertstoffe"))
+      d => List(event(d, "Wertstoffe", Company.Alba))
     )
-    println(VCalendar(rd ++ m ++ Veolia.dates(10).map(x => event(x, "Papier und Pappe"))))
+    println(VCalendar(rd ++ m ++ Veolia.dates(10).map(x => event(x, "Papier und Pappe", Company.Veolia))))
   }
 }
