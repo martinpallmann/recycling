@@ -41,13 +41,17 @@ object Main {
     } yield date
   }
 
-  sealed trait Company {
-    override def toString: String = this.getClass.getSimpleName.replace("$", "").toLowerCase()
-  }
+  sealed trait Company
   case object Company {
-    case object Alba extends Company
-    case object BSR extends Company
-    case object Veolia extends Company
+    case object Alba extends Company {
+      override def toString: String = "Alba"
+    }
+    case object BSR extends Company {
+      override def toString: String = "BSR"
+    }
+    case object Veolia extends Company {
+      override def toString: String = "Veolia"
+    }
   }
 
   def main(args: Array[String]): Unit = {
@@ -60,7 +64,7 @@ object Main {
       println("need three arguments")
       System.exit(1)
     }
-    val a =  Address(args(0), args(1), args(2))
+    val a = Address(args(0), args(1), args(2))
     val m = BSR(a, false).map {
       case (d, s) => event(d, s, Company.BSR)
     }
