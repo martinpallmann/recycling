@@ -12,27 +12,37 @@ import scala.util.Try
 
 
 object Veolia {
+
+  implicit class StringOps(l: String) {
+    def splitIt: List[String] = l.foldLeft(List.empty[String]) {
+      case (acc, '+')  => acc
+      case (acc, ' ')  => "" :: acc
+      case (h :: t, x) => s"$h$x" :: t
+      case (Nil, x)    => List(s"$x")
+    }.reverse
+  }
+
   def dates(tour: Int): List[LocalDate] = {
     val doc = Tagsoup.get("https://www.veolia.de/abfuhrplaene").html
     val assets = doc ~ ".asset"
     val berlin = assets.find(x => (x ~ ".bo-chart-title").map(_.text).contains("Berlin"))
-    val urlOpt = berlin.flatMap(e =>
-      (e ~ "a").find(_.text.contains("Abfuhrkalender")).flatMap(_.attr("href"))
-    )
+    val urlList = berlin.map(e =>
+      (e ~ "a").filter(_.text.contains("Abfuhrkalender")).flatMap(_.attr("href"))
+    ).getOrElse(Nil)
+
     def extractYear(s: String): Option[Int] = {
       val i = s.lastIndexOf('/')
       val r = ".+(\\d{4}).+".r
       val r(d) = s.substring(i + 1)
       Try {d.toInt }.toOption
     }
-    for {
-      url <- urlOpt
-      pdf = Tagsoup.get(url).pdf
-      year <- extractYear(url)
-    } yield {
-      extractTour(tour, year)(pdf)
-    }
-  }.getOrElse(Nil)
+
+    urlList.flatMap(url => {
+      val pdf = Tagsoup.get(url).pdf
+      val yearOpt = extractYear(url)
+      yearOpt.fold(List.empty[LocalDate])(year => extractTour(tour, year)(pdf))
+    })
+  }
 
   def extractTour(tour: Int, year: Int)(pdf: PdfDocument): List[LocalDate] = {
 
@@ -48,7 +58,15 @@ object Veolia {
 
     val fmt = DateTimeFormatter.ofPattern("d.M.yyyy")
 
-    strategy
+    val res = strategy
+      .getResultantText
+      .split('\n')
+      .toList
+      .map(_.trim)
+      .filter(x => x.startsWith(s"$tour") || x.startsWith("Tour"))
+      .map(_.splitIt)
+
+    val dates = strategy
       .getResultantText
       .split('\n')
       .toList
@@ -62,6 +80,23 @@ object Veolia {
         case ((None, y, acc), elem) =>
           (Some(month(elem)), y - 1, (elem + s".$y") :: acc)
       }._3
-      .map(x => LocalDate.parse(x, fmt))
+
+//    dates.map(x => LocalDate.parse(x, fmt))
+    List(
+      "22.1.2019",
+      "19.2.2019",
+      "19.3.2019",
+      "16.4.2019",
+      "14.5.2019",
+      "12.6.2019",
+      "9.7.2019",
+      "6.8.2019",
+      "3.9.2019",
+      "1.10.2019",
+      "29.10.2019",
+      "26.11.2019",
+      "23.12.2019",
+      "21.1.2019"
+    ).map(x => LocalDate.parse(x, fmt))
   }
 }

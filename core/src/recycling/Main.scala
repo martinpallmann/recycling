@@ -72,6 +72,7 @@ object Main {
       _ => List.empty[VEvent],
       d => List(event(d, "Wertstoffe", Company.Alba))
     )
-    println(VCalendar(rd ++ m ++ Veolia.dates(10).map(x => event(x, "Papier und Pappe", Company.Veolia))))
+    val v = Veolia.dates(10).map(x => event(x, "Papier und Pappe", Company.Veolia))
+//    println(VCalendar(rd ++ m ++ v))
   }
 }

@@ -9,7 +9,8 @@ object core extends ScalaModule {
     ivy"io.circe::circe-parser:0.10.0",
     ivy"org.jsoup:jsoup:1.11.3",
     ivy"org.apache.pdfbox:pdfbox:2.0.13",
-    ivy"com.itextpdf:itext7-core:7.1.4"
+    ivy"com.itextpdf:itext7-core:7.1.4",
+    ivy"com.lihaoyi::fastparse:2.1.0"
   )
 }
 
