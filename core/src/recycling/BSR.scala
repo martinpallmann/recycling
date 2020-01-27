@@ -17,15 +17,15 @@ object BSR {
     val streetP = address.street
     val zip = address.zip
 
-    val res = Jsoup
-      .connect("https://www.bsr.de/weihnachtsbaumabfuhr-23335.php")
-      .method(Method.GET)
-      .execute()
+    // val res = Jsoup
+    //   .connect("https://www.bsr.de/weihnachtsbaumabfuhr-23335.php")
+    //   .method(Method.GET)
+    //   .execute()
 
     val res2 = Jsoup
       .connect(s"https://www.bsr.de/abfuhrkalender_ajax.php?script=dynamic_search&step=1&q=$streetP")
       .method(Method.GET)
-      .cookies(res.cookies())
+      // .cookies(res.cookies())
       .execute()
 
     def extractChildren(arr: Vector[Json]): Map[String, String] = {
@@ -55,7 +55,7 @@ object BSR {
     street.map { case (name, _) =>
       Jsoup
         .connect(s"""https://www.bsr.de/abfuhrkalender_ajax.php?script=dynamic_search&step=2&q=$name""")
-        .cookies(res.cookies())
+        .cookies(res2.cookies())
         .method(Method.POST)
         .execute()
     }
@@ -84,7 +84,7 @@ object BSR {
         Jsoup
           .connect("https://www.bsr.de/abfuhrkalender_ajax.php?script=dynamic_kalender_ajax")
           .method(Method.POST)
-          .cookies(res.cookies())
+          .cookies(res2.cookies())
           .data(params.toList.flatMap({ case (k, v) => List(k, v) }): _*)
           .execute()
       val doc = res4.parse()
