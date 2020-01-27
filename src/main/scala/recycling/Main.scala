@@ -13,12 +13,12 @@ object Main {
       System.exit(1)
     }
     val address = Address(args(0), args(1), args(2))
-
-    val v = Veolia.dates.map(x => event(x, "Papier und Pappe", "Veolia"))
-    println(VCalendar(v))
+    val bsr = BSR.dates(address).map(event("Waste", "BSR"))
+    val veolia = Veolia.dates.map(event("Papier und Pappe", "Veolia"))
+    println(VCalendar(bsr ++ veolia))
   }
 
-  def event(d: LocalDate, descr: String, company: String): Anniversary =
+  def event(descr: String, company: String)(d: LocalDate): Anniversary =
     Anniversary(
       d,
       d,

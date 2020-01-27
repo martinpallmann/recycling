@@ -10,7 +10,7 @@ libraryDependencies ++= Seq(
 //  "com.softwaremill.sttp" %% "core" % "1.5.0",
 //  "io.circe" %% "circe-core" % "0.12.3",
 //  "io.circe" %% "circe-parser" % "0.12.3",
-//  "org.jsoup" % "jsoup" % "1.11.3",
+  "org.jsoup" % "jsoup" % "1.12.1"
 //  "org.apache.pdfbox" % "pdfbox" % "2.0.13",
 //  "com.itextpdf" % "itext7-core" % "7.1.4",
 //  "com.lihaoyi" %% "fastparse" % "2.1.0"
