@@ -14,7 +14,7 @@ object Main {
     }
     val address = Address(args(0), args(1), args(2))
 
-    val v = Veolia.dates(10).map(x => event(x, "Papier und Pappe", "Veolia"))
+    val v = Veolia.dates.map(x => event(x, "Papier und Pappe", "Veolia"))
     println(VCalendar(v))
   }
 

@@ -7,7 +7,10 @@ object Veolia {
 
   val fmt: DateTimeFormatter = DateTimeFormatter.ofPattern("d.M.yyyy")
 
-  def dates(tour: Int): List[LocalDate] = List(
+  // go to https://www.veolia.de/abfuhrplaene
+  // check tour 10
+
+  val dates: List[LocalDate] = List(
     "21.1.2020",
     "18.2.2020",
     "17.3.2020",
