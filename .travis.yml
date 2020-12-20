@@ -3,7 +3,7 @@ scala:
   - 3.0.0-M1
 jdk: openjdk11
 script:
-- ./build
+  - ./build
 deploy:
   provider: pages
   skip-cleanup: true
