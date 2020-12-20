@@ -3,4 +3,4 @@
 rm -rf gh-pages
 mkdir gh-pages
 sbt assembly
-java -jar target/scala-2.13/recycling.jar $@ > gh-pages/recycling.ics
+java -jar target/scala-3.0.0-M1/recycling.jar $@ > gh-pages/recycling.ics

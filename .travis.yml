@@ -1,8 +1,8 @@
 language: scala
-scala: 2.12.7
+scala: 3.0.0-M1
 jdk: openjdk11
 script:
-- "./build $STREET $HOUSENO $ZIP"
+- "./build
 deploy:
   provider: pages
   skip-cleanup: true

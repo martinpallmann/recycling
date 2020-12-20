@@ -8,12 +8,7 @@ object Main {
 
     System.setProperty("java.awt.headless", "true")
 
-    if (args.length != 3) {
-      println("need three arguments")
-      System.exit(1)
-    }
-    val address = Address(args(0), args(1), args(2))
-    val bsr = BSR.dates(address).map(event("Waste", "BSR"))
+    val bsr = BSR.dates.map(event("Hausmüll", "BSR"))
     val veolia = Veolia.dates.map(event("Papier und Pappe", "Veolia"))
     println(VCalendar(bsr ++ veolia))
   }
@@ -24,6 +19,8 @@ object Main {
       d,
       s"$d-$company@martinpallmann.de",
       descr,
-      List(DisplayAlarm(descr, RelatedTrigger(DurTime(pos = false, DurHour(8)))))
+      List(
+        DisplayAlarm(descr, RelatedTrigger(DurTime(pos = false, DurHour(8))))
+      )
     )
 }
