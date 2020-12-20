@@ -1,5 +1,5 @@
 language: scala
-scala: 3.0.0-M1
+scala: [ "3.0.0-M1" ]
 jdk: openjdk11
 script:
 - "./build
