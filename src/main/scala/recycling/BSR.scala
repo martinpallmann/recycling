@@ -9,6 +9,7 @@ object BSR {
   val fmt: DateTimeFormatter = DateTimeFormatter.ofPattern("d.M.yyyy")
 
   val dates: List[LocalDate] = List(
+    "30.12.2020",
     "13.1.2021",
     "27.1.2021",
     "10.2.2021",
